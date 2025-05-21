@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tomato Quality Control</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+
+    :root {
+      --br: 20px;
+    }
+
+    .team-container {
+      text-align: center;
+      font-family: "Montserrat", sans-serif;
+      margin-top: 2rem;
+    }
+
+    .team-row {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .card-team {
+      width: 240px;
+      background: #fff;
+      padding: 15px;
+      border-radius: var(--br);
+      transition: 0.5s;
+    }
+
+    .card-team:hover {
+      box-shadow: 0px 3px 10px 5px #e9e9e9;
+    }
+
+    .card-team img {
+      max-width: 100%;
+      border-radius: 50%;
+      aspect-ratio: 1 / 1;
+      border: 4px solid var(--bc, #000);
+    }
+
+    .card-team h2 {
+      margin: 15px 0 5px;
+    }
+
+    .card-team .role {
+      font-size: 80%;
+      color: #444;
+      margin-bottom: 20px;
+    }
+
+    .card-team a {
+      background: var(--btn, #000);
+      color: #fff;
+      padding: 10px 15px;
+      width: 100%;
+      display: block;
+      border-radius: var(--br);
+      text-decoration: none;
+      margin-top: 15px;
+    }
+
+    @media (max-width: 767px) {
+      .team-row {
+        padding: 10px;
+      }
+
+      .card-team {
+        flex: 0 0 calc(50% - 20px);
+        max-width: calc(50% - 20px);
+      }
+    }
+
+    @media (max-width: 420px) {
+      .card-team {
+        flex: 0 0 calc(100% - 20px);
+        max-width: calc(100% - 20px);
+      }
+    }
+
+    .navbar-brand {
+      font-family: 'Arial Black', Gadget, sans-serif;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at center, #0b2e33, #b8e3e9, #0b2e33 70%);
+      margin: 0;
+    }
+
+    .card-custom {
+      background-color: #d9d9d9;
+      border-radius: 1rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      transition: transform 0.3s;
+    }
+
+    .card-custom p {
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    .card-custom:hover {
+      transform: translateY(-5px);
+    }
+
+    .photo {
+      width: 100%;
+      border-radius: 0.75rem;
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
+
+    .param {
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .toggle-btn {
+      background-color: #0d6efd;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease, transform 0.3s;
+    }
+
+    .toggle-btn:hover {
+      background-color: #0b5ed7;
+      transform: scale(1.05);
+    }
+
+    .status-output {
+      font-size: 1.3rem;
+      padding: 0.8rem;
+      border-radius: 0.5rem;
+      text-align: center;
+      font-weight: bold;
+      margin-top: 1rem;
+    }
+
+    .output-bagus {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .output-baik {
+      background-color: #ffc107;
+      color: white;
+    }
+
+    .output-buruk {
+      background-color: #dc3545;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-dark bg-dark navbar-expand-lg sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Tomato Quality Control With Fuzzy Logic 🍅</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="#" onclick="tampilkanHistory()">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="tampilkanTeam()">Team</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="tampilkanRuleFuzzy()">Rule Fuzzy</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container py-4">
+    <div class="row g-4">
+
+      <!-- Team Section -->
+      <div id="team-section" class="team-container" style="display: none;">
+        <h1>Our Team</h1>
+        <div class="team-row">
+          <div class="card-team" style="--bc: #8E9792;--btn: #8E9792;">
+            <img src="https://i.ibb.co/dK3Z1LC/1-XMKyvw-IXm-I7.jpg" alt="*">
+            <h2>M.Garis</h2>
+            <p class="role">Creative Leader</p>
+            <p>dildar@mail.com</p>
+            <a href="tel:+880123456789">Call</a>
+          </div>
+          <div class="card-team" style="--bc: #C89F9C;--btn: #C89F9C;">
+            <a href="https://ibb.co/20Cpb0fQ" target="_blank" rel="noopener noreferrer">
+              <img src="https://i.ibb.co/fVyTcVP5/wp12878972-qin-shi-huang-record-of-ragnarok-wallpapers.png"
+                alt="Image">
+            </a>
+            <h2>Fauzan</h2>
+            <p class="role">Sales Manager</p>
+            <p>purnawanakbar9@mail.com</p>
+            <a href="tel:+880123456789">Call</a>
+          </div>
+          <div class="card-team" style="--bc: #15307D;--btn: #15307D;">
+            <img src="https://i.ibb.co/cb9FPPw/2144934-Gz-Znk-I7-L.jpg" alt="*">
+            <h2>Zidan</h2>
+            <p class="role">Web Developer</p>
+            <p>dipjol@mail.com</p>
+            <a href="tel:+880123456789">Call</a>
+          </div>
+          <div class="card-team" style="--bc: #15307D;--btn: #15307D;">
+            <img src="https://i.ibb.co/cb9FPPw/2144934-Gz-Znk-I7-L.jpg" alt="*">
+            <h2>Fahmay</h2>
+            <p class="role">Web Developer</p>
+            <p>dipjol@mail.com</p>
+            <a href="tel:+880123456789">Call</a>
+          </div>
+        </div>
+      </div>
+      <!-- Rule Fuzzy Section -->
+      <div id="rule-fuzzy-section" style="display: none;">
+        <h2 class="text-center mb-4 text-light">📘 Daftar Rule Fuzzy</h2>
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped table-hover bg-white">
+            <thead class="table-dark text-center">
+              <tr>
+                <th>#</th>
+                <th>Warna</th>
+                <th>Ukuran (gram)</th>
+                <th>Output</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Hijau</td>
+                <td>60 - 85</td>
+                <td>Buruk</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Hijau</td>
+                <td>90 - 120</td>
+                <td>Buruk</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Hijau</td>
+                <td>lainnya</td>
+                <td>Sedang</td>
+              </tr>
+
+              <tr>
+                <td>4</td>
+                <td>Kuning</td>
+                <td>60 - 85</td>
+                <td>Buruk</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>Kuning</td>
+                <td>90 - 120</td>
+                <td>Sedang</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>Kuning</td>
+                <td>lainnya</td>
+                <td>Sedang</td>
+              </tr>
+
+              <tr>
+                <td>7</td>
+                <td>Merah</td>
+                <td>60 - 85</td>
+                <td>Sedang</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>Merah</td>
+                <td>90 - 120</td>
+                <td>Bagus</td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td>Merah</td>
+                <td>lainnya</td>
+                <td>Bagus</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Dashboard Content -->
+      <div id="dashboard-content">
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-4">
+            <div class="card-custom">
+              <h5 class="mb-3">🧑‍🤝‍🧑 Team Photo</h5>
+              <img src="https://i.ibb.co/1YzFvs7v/foto-tim.jpg" alt="Team Photo" class="photo" />
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <div class="card-custom">
+              <h5 class="mb-3">📷 Project Photo</h5>
+              <img src="https://i.ibb.co/1YzFvs7v/foto-tim.jpg" alt="Project Photo" class="photo" />
+              <p class="text-center mt-2">
+                Sistem klasifikasi kualitas tomat berbasis ESP32 menggunakan sensor warna dan berat dengan logika fuzzy
+                untuk menentukan kualitas: Bagus, Sedang, atau Buruk.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <div class="card-custom">
+              <h5 class="mb-3">🧪 Sensor Parameters</h5>
+              <div class="param">⚖️ Weight: <span id="berat" class="fw-semibold text-primary">Loading...</span></div>
+              <div class="param">🎨 Color: <span id="warna" class="fw-semibold text-primary">Loading...</span></div>
+              <div id="status-output" class="status-output output-baik">Loading quality...</div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <div class="card-custom text-center">
+              <h5 class="mb-3">🧭 Current Timestamp</h5>
+              <div id="timestamp-display"
+                style="font-size: 1.3rem; font-weight: bold; padding: 0.8rem; border-radius: 0.5rem; background-color: #0d6efd; color: white;">
+                Loading time...
+              </div>
+            </div>
+          </div>
+
+
+          <div class="card shadow-sm rounded p-3">
+            <h5>
+              <i class="bi bi-bar-chart-line"></i> History Pembacaan
+            </h5>
+            <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+              <table class="table table-striped table-hover table-bordered text-center">
+                <thead class="table-dark">
+                  <tr>
+                    <th><i class="bi bi-clock"></i> Timestamp</th>
+                    <th><i class="bi bi-speedometer"></i> Berat (g)</th>
+                    <th><i class="bi bi-palette"></i> Warna</th>
+                    <th><i class="bi bi-star-half"></i> Kualitas</th>
+                  </tr>
+                </thead>
+                <tbody id="history-table-body">
+                  <tr>
+                    <td colspan="4">
+                      <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div> <!-- end row -->
+      </div> <!-- end dashboard-content -->
+      <!-- end dashboard-content -->
+
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom Script -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC4QjhvYjIMdtGzfv_k3zl7S5kTj4re3a0",
+      authDomain: "kontolodon-92b4a.firebaseapp.com",
+      databaseURL: "https://kontolodon-92b4a-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "kontolodon-92b4a",
+      storageBucket: "kontolodon-92b4a.appspot.com",
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    function bacaDataTomat() {
+      db.ref("data_tomat").on("value", (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          document.getElementById("berat").textContent = data.berat + " grams";
+          document.getElementById("warna").textContent = data.warna;
+
+          // Update kualitas real-time
+          const outputDiv = document.getElementById("status-output");
+          outputDiv.textContent = data.kualitas || "Tidak diketahui";
+
+          // Tambahkan class styling berdasarkan kualitas
+          outputDiv.classList.remove("output-bagus", "output-baik", "output-buruk");
+
+          if (data.kualitas === "Bagus") {
+            outputDiv.classList.add("output-bagus");
+          } else if (data.kualitas === "Baik") {
+            outputDiv.classList.add("output-baik");
+          } else if (data.kualitas === "Buruk") {
+            outputDiv.classList.add("output-buruk");
+          }
+        }
+      });
+    }
+
+
+    function bacaHistoryTomat() {
+      const historyRef = db.ref("history_tomat").limitToLast(20);
+      historyRef.on("value", (snapshot) => {
+        const data = snapshot.val();
+        const tbody = document.getElementById("history-body");
+        tbody.innerHTML = "";
+
+        if (data) {
+          const entries = Object.entries(data).sort((a, b) => b[0].localeCompare(a[0]));
+          entries.forEach(([timestamp, record]) => {
+            tbody.innerHTML += `
+              <tr>
+                <td>${timestamp}</td>
+                <td>${record.berat}</td>
+                <td>${record.warna}</td>
+                <td>${record.kualitas}</td>
+              </tr>`;
+          });
+        } else {
+          tbody.innerHTML = "<tr><td colspan='4' class='text-center'>Tidak ada data.</td></tr>";
+        }
+      });
+    }
+    function updateTimestamp() {
+      const now = new Date();
+
+      // Konversi ke WIB (GMT+7)
+      const wibOffset = 7 * 60; // dalam menit
+      const localUTCOffset = now.getTimezoneOffset(); // dalam menit
+      const wibTime = new Date(now.getTime() + (wibOffset + localUTCOffset) * 60000);
+
+      // Format jam saja (tanpa tanggal)
+      const formatted = wibTime.toLocaleTimeString('id-ID', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      }) + " WIB";
+
+      document.getElementById('timestamp-display').textContent = formatted;
+    }
+
+
+    window.onload = function () {
+      bacaDataTomat();
+      bacaHistoryTomat();
+      updateTimestamp(); // panggil sekali saat load
+      setInterval(updateTimestamp, 1000); // update setiap detik
+    };
+    function tampilkanHistory() {
+      document.getElementById("dashboard-content").style.display = "block";
+      document.getElementById("team-section").style.display = "none";
+      document.getElementById("rule-fuzzy-section").style.display = "none";
+    }
+
+    function tampilkanTeam() {
+      document.getElementById("dashboard-content").style.display = "none";
+      document.getElementById("team-section").style.display = "block";
+      document.getElementById("rule-fuzzy-section").style.display = "none";
+    }
+
+    function tampilkanRuleFuzzy() {
+      document.getElementById("dashboard-content").style.display = "none";
+      document.getElementById("team-section").style.display = "none";
+      document.getElementById("rule-fuzzy-section").style.display = "block";
+    }
+
+    window.onload = function () {
+      bacaDataTomat();
+      bacaHistoryTomat();
+      updateTimestamp();
+      setInterval(updateTimestamp, 1000); // update setiap detik
+    };
+    function muatHistory() {
+      const historyTable = document.getElementById("history-table-body");
+      historyTable.innerHTML = `
+        <tr>
+          <td colspan="4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </td>
+        </tr>
+      `;
+
+      db.ref("history").limitToLast(50).on("value", (snapshot) => {
+        const data = snapshot.val();
+        historyTable.innerHTML = ""; // Kosongkan isi tabel dulu
+
+        if (data) {
+          const keys = Object.keys(data).reverse(); // Biar data terbaru di atas
+          keys.forEach((key) => {
+            const item = data[key];
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+              <td>${item.timestamp || "-"}</td>
+              <td>${item.berat || "-"} g</td>
+              <td>${item.warna || "-"}</td>
+              <td>${item.kualitas || "-"}</td>
+            `;
+            historyTable.appendChild(row);
+          });
+        } else {
+          historyTable.innerHTML = `
+            <tr>
+              <td colspan="4">Tidak ada data history.</td>
+            </tr>
+          `;
+        }
+      });
+    }
+
+    // Panggil saat halaman dimuat
+    window.addEventListener("load", () => {
+      bacaDataTomat();
+      muatHistory();
+    });
+
+  </script>
+</body>
+
+</html>
